@@ -1,33 +1,93 @@
 {
-  "_readme": "Context Guard config. Set your plan below. Trigger threshold = fraction of context window at which Claude is warned to run /session-save before next tool call.",
+  "_readme": "Context Guard config. Set active_plan to match your Anthropic subscription. Trigger threshold = fraction of context window at which Claude is blocked and told to run /session-save.",
+  "_last_updated": "2026-05-08",
 
   "active_plan": "pro",
 
   "plans": {
     "free": {
-      "label": "Anthropic Free",
-      "trigger_threshold": 0.72,
-      "note": "Free tier — trigger slightly earlier due to rate limits"
+      "label": "Claude.ai Free",
+      "context_window": 200000,
+      "trigger_threshold": 0.68,
+      "note": "Free tier. 2-5 Claude Code prompts per 5-hr window. Trigger early — you can't afford to waste a session on recovery."
     },
     "pro": {
-      "label": "Anthropic Pro ($20/mo)",
+      "label": "Claude.ai Pro ($20/mo)",
+      "context_window": 200000,
       "trigger_threshold": 0.75,
-      "note": "Pro plan — 75% trigger leaves ~50k tokens for save docs + /compact"
+      "note": "Pro plan. 10-40 Claude Code prompts per 5-hr window (doubled May 2026). 200k context. Peak throttle removed."
+    },
+    "pro_1m": {
+      "label": "Claude.ai Pro — 1M context beta",
+      "context_window": 1000000,
+      "trigger_threshold": 0.75,
+      "note": "Pro plan with 1M token context beta (Claude Code only, rolled out May 2026). Use this if your sessions aren't auto-compacting at ~168k tokens."
+    },
+    "max_5x": {
+      "label": "Claude.ai Max 5x ($100/mo)",
+      "context_window": 200000,
+      "trigger_threshold": 0.78,
+      "note": "Max 5x plan. 50-200 Claude Code prompts per 5-hr window. Opus access included. Can push closer to limit."
+    },
+    "max_5x_1m": {
+      "label": "Claude.ai Max 5x — 1M context beta",
+      "context_window": 1000000,
+      "trigger_threshold": 0.78,
+      "note": "Max 5x with 1M context beta. Same session budget as max_5x, larger context window."
+    },
+    "max_20x": {
+      "label": "Claude.ai Max 20x ($200/mo)",
+      "context_window": 200000,
+      "trigger_threshold": 0.80,
+      "note": "Max 20x plan. 200-800 Claude Code prompts per 5-hr window. No peak throttle. Most headroom."
+    },
+    "max_20x_1m": {
+      "label": "Claude.ai Max 20x — 1M context beta",
+      "context_window": 1000000,
+      "trigger_threshold": 0.80,
+      "note": "Max 20x with 1M context beta."
+    },
+    "team": {
+      "label": "Claude.ai Team ($25/seat/mo)",
+      "context_window": 200000,
+      "trigger_threshold": 0.75,
+      "note": "Team Standard. ~56 msgs per 5-hr window per seat. Similar to Pro."
+    },
+    "team_premium": {
+      "label": "Claude.ai Team Premium ($125/seat/mo)",
+      "context_window": 200000,
+      "trigger_threshold": 0.78,
+      "note": "Team Premium. ~280 msgs per 5-hr window. Weekly caps apply."
     },
     "api_tier1": {
-      "label": "API Tier 1",
-      "trigger_threshold": 0.78,
-      "note": "Direct API, Tier 1"
+      "label": "Anthropic API Tier 1",
+      "context_window": 200000,
+      "trigger_threshold": 0.75,
+      "note": "API Tier 1 (requires $5 deposit, up to $100/mo). 50 RPM, 30k ITPM. Rate limits are the constraint, not session windows. Cached tokens don't count toward ITPM."
     },
     "api_tier2": {
-      "label": "API Tier 2+",
+      "label": "Anthropic API Tier 2",
+      "context_window": 200000,
+      "trigger_threshold": 0.78,
+      "note": "API Tier 2 ($40 cumulative spend). 1,000 RPM, 450k ITPM. More headroom."
+    },
+    "api_tier3": {
+      "label": "Anthropic API Tier 3",
+      "context_window": 200000,
       "trigger_threshold": 0.80,
-      "note": "API Tier 2+ — higher rate limits allow later trigger"
+      "note": "API Tier 3 ($200 cumulative spend). 2,000 RPM, 800k ITPM. Push closer to limit safely."
+    },
+    "api_tier4": {
+      "label": "Anthropic API Tier 4+",
+      "context_window": 200000,
+      "trigger_threshold": 0.82,
+      "note": "API Tier 4+ ($400+ cumulative spend). 4,000 RPM, 2M ITPM. Maximum headroom."
     },
     "custom": {
       "label": "Custom",
+      "context_window": 200000,
       "trigger_threshold": 0.75,
-      "note": "Edit trigger_threshold to any value 0.0–1.0"
+      "note": "Edit context_window and trigger_threshold to any values."
     }
   },
 

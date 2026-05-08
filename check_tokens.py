@@ -61,8 +61,12 @@ def main():
         sys.exit(1)
 
     total, model = assistants[-1]
-    models = cfg.get("models", {})
-    window = models.get(model, models.get("_fallback", 200000))
+    plan_cfg = cfg["plans"].get(plan_key, cfg["plans"]["pro"])
+    if "context_window" in plan_cfg:
+        window = plan_cfg["context_window"]
+    else:
+        models = cfg.get("models", {})
+        window = models.get(model, models.get("_fallback", 200000))
     pct = total / window * 100
     trigger_tokens = int(threshold * window)
     remaining = window - total

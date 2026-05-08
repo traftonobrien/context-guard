@@ -21,7 +21,10 @@ def load_config():
     return cfg, plan
 
 
-def get_context_window(cfg, model: str) -> int:
+def get_context_window(cfg, plan: dict, model: str) -> int:
+    # Plan-level override takes precedence (e.g. pro_1m sets 1_000_000)
+    if "context_window" in plan:
+        return plan["context_window"]
     models = cfg.get("models", {})
     return models.get(model, models.get("_fallback", 200000))
 
@@ -78,7 +81,7 @@ def main():
     if total_tokens is None:
         sys.exit(0)
 
-    context_window = get_context_window(cfg, model or "_fallback")
+    context_window = get_context_window(cfg, plan, model or "_fallback")
     threshold = plan.get("trigger_threshold", 0.75)
     pct = total_tokens / context_window
 
