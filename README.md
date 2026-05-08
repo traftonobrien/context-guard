@@ -20,7 +20,7 @@ Automatic context window monitor for [Claude Code](https://claude.ai/code). Watc
 ## Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/context-guard.git
+git clone https://github.com/traftonobrien/context-guard.git
 cd context-guard
 chmod +x install.sh
 ./install.sh
