@@ -1,0 +1,51 @@
+{
+  "_readme": "Context Guard config. Set your plan below. Trigger threshold = fraction of context window at which Claude is warned to run /session-save before next tool call.",
+
+  "active_plan": "pro",
+
+  "plans": {
+    "free": {
+      "label": "Anthropic Free",
+      "trigger_threshold": 0.72,
+      "note": "Free tier — trigger slightly earlier due to rate limits"
+    },
+    "pro": {
+      "label": "Anthropic Pro ($20/mo)",
+      "trigger_threshold": 0.75,
+      "note": "Pro plan — 75% trigger leaves ~50k tokens for save docs + /compact"
+    },
+    "api_tier1": {
+      "label": "API Tier 1",
+      "trigger_threshold": 0.78,
+      "note": "Direct API, Tier 1"
+    },
+    "api_tier2": {
+      "label": "API Tier 2+",
+      "trigger_threshold": 0.80,
+      "note": "API Tier 2+ — higher rate limits allow later trigger"
+    },
+    "custom": {
+      "label": "Custom",
+      "trigger_threshold": 0.75,
+      "note": "Edit trigger_threshold to any value 0.0–1.0"
+    }
+  },
+
+  "models": {
+    "claude-sonnet-4-6":          200000,
+    "claude-opus-4-7":            200000,
+    "claude-haiku-4-5":           200000,
+    "claude-haiku-4-5-20251001":  200000,
+    "claude-3-5-sonnet-20241022": 200000,
+    "claude-3-5-haiku-20241022":  200000,
+    "claude-3-opus-20240229":     200000,
+    "claude-3-haiku-20240307":    200000,
+    "_fallback":                  200000
+  },
+
+  "flag_path": "/tmp/context-guard-flag.json",
+
+  "docs_output_dir": ".claude/sessions",
+
+  "enabled": true
+}
