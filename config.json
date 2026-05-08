@@ -1,6 +1,7 @@
 {
-  "_readme": "Context Guard config. Set active_plan to match your Anthropic subscription. Trigger threshold = fraction of context window at which Claude is blocked and told to run /session-save.",
+  "_readme": "Context Guard config. Set active_plan to match your Anthropic subscription. session_output_budget = estimated output token budget per 5-hr rolling window (empirically derived). trigger_threshold = fraction of that budget at which /session-save is triggered.",
   "_last_updated": "2026-05-08",
+  "_budget_note": "session_output_budget values are empirically derived. Pro: calibrated from real session (102,429 output tokens = 57% → budget ~179,700). Others scaled proportionally from Anthropic's stated plan multipliers. Update if Anthropic changes limits.",
 
   "active_plan": "pro",
 
@@ -8,56 +9,65 @@
     "free": {
       "label": "Claude.ai Free",
       "context_window": 200000,
+      "session_output_budget": 35000,
       "trigger_threshold": 0.68,
-      "note": "Free tier. 2-5 Claude Code prompts per 5-hr window. Trigger early — you can't afford to waste a session on recovery."
+      "note": "Free tier. Very limited Claude Code usage. Trigger early — recovery sessions cost too much."
     },
     "pro": {
       "label": "Claude.ai Pro ($20/mo)",
       "context_window": 200000,
+      "session_output_budget": 179700,
       "trigger_threshold": 0.75,
-      "note": "Pro plan. 10-40 Claude Code prompts per 5-hr window (doubled May 2026). 200k context. Peak throttle removed."
+      "note": "Pro plan. Empirically calibrated: 102,429 output tokens = 57% → ~179,700 budget. Doubled May 2026."
     },
     "pro_1m": {
       "label": "Claude.ai Pro — 1M context beta",
       "context_window": 1000000,
+      "session_output_budget": 179700,
       "trigger_threshold": 0.75,
-      "note": "Pro plan with 1M token context beta (Claude Code only, rolled out May 2026). Use this if your sessions aren't auto-compacting at ~168k tokens."
+      "note": "Same output budget as pro, larger context window. Use if sessions aren't auto-compacting at ~168k tokens."
     },
     "max_5x": {
       "label": "Claude.ai Max 5x ($100/mo)",
       "context_window": 200000,
+      "session_output_budget": 898500,
       "trigger_threshold": 0.78,
-      "note": "Max 5x plan. 50-200 Claude Code prompts per 5-hr window. Opus access included. Can push closer to limit."
+      "note": "Max 5x plan. 5× Pro budget = ~898,500 output tokens per 5hr. Opus access included."
     },
     "max_5x_1m": {
       "label": "Claude.ai Max 5x — 1M context beta",
       "context_window": 1000000,
+      "session_output_budget": 898500,
       "trigger_threshold": 0.78,
-      "note": "Max 5x with 1M context beta. Same session budget as max_5x, larger context window."
+      "note": "Max 5x with 1M context beta."
     },
     "max_20x": {
       "label": "Claude.ai Max 20x ($200/mo)",
       "context_window": 200000,
+      "session_output_budget": 3594000,
       "trigger_threshold": 0.80,
-      "note": "Max 20x plan. 200-800 Claude Code prompts per 5-hr window. No peak throttle. Most headroom."
+      "note": "Max 20x plan. 20× Pro budget = ~3,594,000 output tokens per 5hr. No peak throttle."
     },
     "max_20x_1m": {
       "label": "Claude.ai Max 20x — 1M context beta",
       "context_window": 1000000,
+      "session_output_budget": 3594000,
       "trigger_threshold": 0.80,
       "note": "Max 20x with 1M context beta."
     },
     "team": {
       "label": "Claude.ai Team ($25/seat/mo)",
       "context_window": 200000,
+      "session_output_budget": 224625,
       "trigger_threshold": 0.75,
-      "note": "Team Standard. ~56 msgs per 5-hr window per seat. Similar to Pro."
+      "note": "Team Standard. ~1.25× Pro budget per seat."
     },
     "team_premium": {
       "label": "Claude.ai Team Premium ($125/seat/mo)",
       "context_window": 200000,
+      "session_output_budget": 1123125,
       "trigger_threshold": 0.78,
-      "note": "Team Premium. ~280 msgs per 5-hr window. Weekly caps apply."
+      "note": "Team Premium. ~6.25× Pro budget per seat. Weekly caps apply."
     },
     "api_tier1": {
       "label": "Anthropic API Tier 1",

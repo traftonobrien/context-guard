@@ -40,18 +40,26 @@ def main():
     if flag.get("session_id") != session_id:
         sys.exit(0)
 
-    pct = flag.get("pct", "?")
+    trigger_reason = flag.get("trigger_reason", "threshold exceeded")
     threshold = flag.get("threshold_pct", "?")
-    tokens = flag.get("tokens", 0)
-    window = flag.get("context_window", 200000)
-    model = flag.get("model", "unknown")
+    budget_pct = flag.get("budget_pct")
+    output_5hr = flag.get("output_5hr", 0)
+    budget = flag.get("budget")
+    ctx_pct = flag.get("ctx_pct", "?")
 
-    # Output block decision — Claude Code reads this from stdout
+    if budget_pct is not None:
+        usage_line = (
+            f"5-hr plan budget: {budget_pct}% ({output_5hr:,}/{budget:,} output tokens). "
+            f"Context window: {ctx_pct}%."
+        )
+    else:
+        usage_line = f"Context window: {ctx_pct}%."
+
     block_msg = (
-        f"🛑 Context Guard: {pct}% of context window used "
-        f"({tokens:,}/{window:,} tokens, model: {model}). "
+        f"🛑 Context Guard: {trigger_reason}. "
+        f"{usage_line} "
         f"Threshold: {threshold}%. "
-        f"Run /session-save NOW to generate summary, next-steps, and resume docs "
+        f"Run /session-save NOW — generate summary, next-steps, and resume docs "
         f"before context is lost. Tool call '{tool_name}' blocked."
     )
 
