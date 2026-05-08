@@ -48,10 +48,7 @@ def main():
     ctx_pct = flag.get("ctx_pct", "?")
 
     if budget_pct is not None:
-        usage_line = (
-            f"5-hr plan budget: {budget_pct}% ({output_5hr:,}/{budget:,} output tokens). "
-            f"Context window: {ctx_pct}%."
-        )
+        usage_line = f"Context window: {ctx_pct}%."
     else:
         usage_line = f"Context window: {ctx_pct}%."
 
